@@ -1,39 +1,102 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="stylesheet" href="styles.css" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Tauri App</title>
-    <script type="module" src="/main.js" defer></script>
-  </head>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
 
-  <body>
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>
+        Complementary Chat Tool
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="styles.css">
+
+    <script
+        type="module"
+        src="/js/main.js"
+        defer>
+    </script>
+
+</head>
+
+<body>
+
     <main class="container">
-      <h1>Welcome to Tauri</h1>
 
-      <div class="row">
-        <a href="https://tauri.app" target="_blank">
-          <img src="/assets/tauri.svg" class="logo tauri" alt="Tauri logo" />
-        </a>
-        <a
-          href="https://developer.mozilla.org/en-US/docs/Web/JavaScript"
-          target="_blank"
-        >
-          <img
-            src="/assets/javascript.svg"
-            class="logo vanilla"
-            alt="JavaScript logo"
-          />
-        </a>
-      </div>
-      <p>Click on the Tauri logo to learn more about the framework</p>
+        <h1>
+            Complementary Chat Tool
+        </h1>
 
-      <form class="row" id="greet-form">
-        <input id="greet-input" placeholder="Enter a name..." />
-        <button type="submit">Greet</button>
-      </form>
-      <p id="greet-msg"></p>
+        <section class="settings">
+
+            <section class="connection-settings">
+
+              <label for="endpoint-url">
+                  Endpoint URL
+              </label>
+
+              <input
+                  id="endpoint-url"
+                  type="text"
+                  placeholder="https://api.openai.com/v1/chat/completions">
+
+              <label for="api-key">
+                  API Key
+              </label>
+
+              <input
+                  id="api-key"
+                  type="password"
+                  placeholder="sk-...">
+
+              <label for="model-name">
+                  Model Name
+              </label>
+
+              <input
+                  id="model-name"
+                  type="text"
+                  placeholder="gpt-5">
+
+          </section>
+
+            <label for="instructions">
+                Instrucciones del sistema
+            </label>
+
+            <textarea
+                id="instructions"
+                rows="6"
+                placeholder="Escribe aquí las reglas para el modelo">
+            </textarea>
+
+        </section>
+
+        <section
+            id="chat"
+            class="chat">
+
+        </section>
+
+        <section class="prompt-box">
+
+            <textarea
+                id="prompt"
+                rows="3"
+                placeholder="Escribe tu mensaje">
+            </textarea>
+
+            <button id="send-btn">
+                Enviar
+            </button>
+
+        </section>
+
     </main>
-  </body>
+
+</body>
 </html>
