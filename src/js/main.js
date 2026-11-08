@@ -1,10 +1,13 @@
 const { invoke } = window.__TAURI__.core;
 
 const messages = [];
+let isLoading = false;
 
 window.addEventListener(
     "DOMContentLoaded",
     () => {
+
+        loadSettings();
 
         document
             .getElementById("send-btn")
@@ -12,26 +15,47 @@ window.addEventListener(
                 "click",
                 handleSend
             );
+        
+            document
+            .getElementById("prompt")
+            .addEventListener(
+                "keydown",
+                (event) => {
+
+                    if (
+                        event.key === "Enter" &&
+                        !event.shiftKey
+                    ) {
+                        event.preventDefault();
+                        handleSend();
+                    }
+                }
+            );
     }
 );
 
-function addMessage(author, text) {
+function renderConversation(
+    prompt,
+    answer
+) {
 
     const chat =
         document.getElementById("chat");
 
-    const div =
-        document.createElement("div");
+    chat.innerHTML =
+        `<div class="user-message"><strong>User: </strong>${prompt}</div>
 
-    div.innerHTML =
-        `<strong>${author}:</strong> ${text}`;
-
-    chat.appendChild(div);
+         <div class="assistant-message"><strong>AI:</strong></div>
+         <div class="assistant-content">${answer}</div>`;
 }
 
 
 
+
 async function handleSend() {
+    if (isLoading) { //avoid sending 2 messages at once
+        return;
+    }
 
     const endpoint =
         document.getElementById("endpoint-url").value;
@@ -52,13 +76,21 @@ async function handleSend() {
         return;
     }
 
+    if (!endpoint.trim()) {
+        alert("Missing endpoint.");
+        return;
+    }
+
+    saveSettings();
+    setLoading(true);
+
     messages.push({
         role: "user",
         content: prompt
     });
 
     try {
-
+        setLoading(true);
         const result =
           await invoke(
               "send_prompt",
@@ -85,15 +117,73 @@ async function handleSend() {
         console.log("Messages:");
         console.log(messages);
 
-        addMessage("Usuario", prompt);
-        addMessage("IA", answer);
-
+        renderConversation(prompt,answer);
     }
     catch(error) {
-
-        addMessage(
-            "Error",
-            error.message
+        renderConversation(
+            prompt,
+            "Error: No AI connected."
         );
+        console.error(error);
     }
+    finally {
+      setLoading(false);
+    }
+}
+
+// to visually change the button
+function setLoading(loading) {
+    isLoading = loading;
+
+    const button =
+        document.getElementById("send-btn");
+    const prompt =
+        document.getElementById("prompt");
+
+    if (loading) {
+        button.textContent = "Wait";
+        button.disabled = true;
+        prompt.disabled = true;
+    } else {
+        button.textContent = "Enviar";
+        button.disabled = false;
+        prompt.disabled = false;
+    }
+}
+
+function loadSettings() {
+
+    document.getElementById("endpoint-url").value =
+        localStorage.getItem("endpoint-url") ?? "";
+
+    document.getElementById("api-key").value =
+        localStorage.getItem("api-key") ?? "";
+
+    document.getElementById("model-name").value =
+        localStorage.getItem("model-name") ?? "";
+
+    document.getElementById("instructions").value =
+        localStorage.getItem("instructions") ?? "";
+}
+
+function saveSettings() {
+    localStorage.setItem(
+        "endpoint-url",
+        document.getElementById("endpoint-url").value
+    );
+
+    localStorage.setItem(
+        "api-key",
+        document.getElementById("api-key").value
+    );
+
+    localStorage.setItem(
+        "model-name",
+        document.getElementById("model-name").value
+    );
+
+    localStorage.setItem(
+        "instructions",
+        document.getElementById("instructions").value
+    );
 }

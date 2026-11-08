@@ -2,7 +2,6 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-
     <meta
         name="viewport"
         content="width=device-width, initial-scale=1.0">
@@ -20,20 +19,18 @@
         src="/js/main.js"
         defer>
     </script>
-
 </head>
 
 <body>
-
     <main class="container">
-
         <h1>
             Complementary Chat Tool
         </h1>
-
-        <section class="settings">
-
-            <section class="connection-settings">
+        <details class="settings-panel">
+          <summary>
+              Configuration
+          </summary>
+          <div class="settings-content">
 
               <label for="endpoint-url">
                   Endpoint URL
@@ -50,8 +47,7 @@
 
               <input
                   id="api-key"
-                  type="password"
-                  placeholder="sk-...">
+                  type="password">
 
               <label for="model-name">
                   Model Name
@@ -62,40 +58,31 @@
                   type="text"
                   placeholder="gpt-5">
 
-          </section>
+              <label for="instructions">
+                  AI instructions
+              </label>
 
-            <label for="instructions">
-                Instrucciones del sistema
-            </label>
-
-            <textarea
-                id="instructions"
-                rows="6"
-                placeholder="Escribe aquí las reglas para el modelo"></textarea>
-
-        </section>
-
+              <textarea
+                  id="instructions"
+                  rows="6"
+                  placeholder="Write here the instructions for the model"></textarea>
+          </div>
+        </details>
         <section
             id="chat"
             class="chat">
-
         </section>
 
         <section class="prompt-box">
-
             <textarea
                 id="prompt"
                 rows="3"
-                placeholder="Escribe tu mensaje"></textarea>
-            </textarea>
+                placeholder="Write here"></textarea>
 
             <button id="send-btn">
-                Enviar
+                Send
             </button>
-
         </section>
-
     </main>
-
 </body>
 </html>
