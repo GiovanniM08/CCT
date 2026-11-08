@@ -1,5 +1,5 @@
 # CCT
-Complementary Chat Tool, its a basic ai chat tool that works connected to an api key.
+Complementary Chat Tool, its a basic ai chat tool that works fully locally connected to an api key.
 
 # Run in development
 
