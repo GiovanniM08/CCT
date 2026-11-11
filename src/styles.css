@@ -17,11 +17,17 @@ body {
     gap: 10px;
 }
 
+#save-btn {
+    width: fit-content;
+    align-self: flex-start;
+}
+
 input,
 textarea {
     width: 100%;
     box-sizing: border-box;
     padding: 10px;
+    resize: vertical;
 }
 
 .chat {
@@ -31,6 +37,13 @@ textarea {
     border: 1px solid #444;
     max-height: 400px;
     overflow-y: auto;
+}
+.chat-actions {
+    margin-top: 10px;
+}
+
+#copy-btn {
+    padding: 8px 12px;
 }
 
 .user-message {
@@ -49,6 +62,7 @@ textarea {
 
 .prompt-box {
     margin-top: 20px;
+    
 }
 
 button {
