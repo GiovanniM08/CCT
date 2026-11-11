@@ -17,6 +17,33 @@ body {
     gap: 10px;
 }
 
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: fit-content;
+}
+
+.checkbox-label input {
+    width: auto;
+    margin: 0;
+}
+
+.memory-settings {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+#memory-limit {
+    width: 70px;
+}
+
+.memory-hint {
+    color: #b3a310;
+    font-size: 0.8rem;
+}
+
 #save-btn {
     width: fit-content;
     align-self: flex-start;

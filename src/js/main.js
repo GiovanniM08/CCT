@@ -12,7 +12,7 @@ window.addEventListener(
             .getElementById("send-btn")
             .addEventListener("click", handleSend);
         
-            document
+        document
             .getElementById("prompt")
             .addEventListener(
                 "keydown",
@@ -27,11 +27,18 @@ window.addEventListener(
                 }
             );
         document
-        .getElementById("copy-btn")
-        .addEventListener("click", copyAnswer);
+            .getElementById("copy-btn")
+            .addEventListener("click", copyAnswer);
         document
-        .getElementById("save-btn")
-        .addEventListener("click", saveConfiguration);
+            .getElementById("save-btn")
+            .addEventListener("click", saveConfiguration);
+
+        const unlimited = document.getElementById("unlimited-memory");
+        const limit =document.getElementById("memory-limit");
+        unlimited.addEventListener("change", () => {
+            limit.disabled = unlimited.checked;
+        });
+        limit.disabled = unlimited.checked;
     }
 );
 
@@ -75,6 +82,12 @@ async function handleSend() {
         alert("Missing endpoint.");
         return;
     }
+    
+    const memoryLimit = Number(document.getElementById("memory-limit").value);
+    if (!Number.isInteger(memoryLimit) || memoryLimit < 0) {
+        alert("Memory limit must be a positive integer.");
+        return;
+    }
 
     saveSettings();
     setLoading(true);
@@ -84,19 +97,32 @@ async function handleSend() {
         content: prompt
     });
 
+    const unlimited = document.getElementById("unlimited-memory").checked;
+
+    if (!unlimited) {
+        const maxIterations = Number(document.getElementById("memory-limit").value);
+        const maxMessages = maxIterations * 2 + 1;
+
+        while (messages.length > maxMessages) { // removes the oldest whole iteration from the memory
+            messages.shift(); 
+            if (messages.length > 0) {
+                messages.shift();
+            }
+        }
+    }
+
     try {
         setLoading(true);
-        const result =
-          await invoke(
-              "send_prompt",
-              {
-                  endpoint,
-                  apiKey,
-                  model,
-                  instructions,
-                  messages
-              }
-          );
+        const result = await invoke(
+            "send_prompt",
+            {
+                endpoint,
+                apiKey,
+                model,
+                instructions,
+                messages
+            }
+        );
         const json =
             JSON.parse(result);
         const answer =
@@ -108,6 +134,8 @@ async function handleSend() {
             role: "assistant",
             content: answer
         });
+
+        document.getElementById("prompt").value = ""; // cleans the writing box
 
         console.log("Messages:");
         console.log(messages);
@@ -159,39 +187,31 @@ async function copyAnswer() {
 }
 
 function loadSettings() {
-    document.getElementById("endpoint-url").value =
-        localStorage.getItem("endpoint-url") ?? "";
+    document.getElementById("endpoint-url").value = localStorage.getItem("endpoint-url") ?? "";
 
-    document.getElementById("api-key").value =
-        localStorage.getItem("api-key") ?? "";
+    document.getElementById("api-key").value = localStorage.getItem("api-key") ?? "";
 
-    document.getElementById("model-name").value =
-        localStorage.getItem("model-name") ?? "";
+    document.getElementById("model-name").value = localStorage.getItem("model-name") ?? "";
 
-    document.getElementById("instructions").value =
-        localStorage.getItem("instructions") ?? "";
+    document.getElementById("memory-limit").value = localStorage.getItem("memory-limit") ?? "40";
+
+    document.getElementById("unlimited-memory").checked = localStorage.getItem("unlimited-memory") === "true";
+
+    document.getElementById("instructions").value = localStorage.getItem("instructions") ?? "";
 }
 
 function saveSettings() {
-    localStorage.setItem(
-        "endpoint-url",
-        document.getElementById("endpoint-url").value
-    );
+    localStorage.setItem("endpoint-url", document.getElementById("endpoint-url").value);
 
-    localStorage.setItem(
-        "api-key",
-        document.getElementById("api-key").value
-    );
+    localStorage.setItem("api-key", document.getElementById("api-key").value);
 
-    localStorage.setItem(
-        "model-name",
-        document.getElementById("model-name").value
-    );
+    localStorage.setItem("model-name", document.getElementById("model-name").value);
 
-    localStorage.setItem(
-        "instructions",
-        document.getElementById("instructions").value
-    );
+    localStorage.setItem("memory-limit", document.getElementById("memory-limit").value);
+
+    localStorage.setItem("unlimited-memory", document.getElementById("unlimited-memory").checked);
+
+    localStorage.setItem("instructions", document.getElementById("instructions").value);
 }
 
 function saveConfiguration() {

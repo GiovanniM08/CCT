@@ -39,7 +39,7 @@
               <input
                   id="endpoint-url"
                   type="text"
-                  placeholder="https://api.openai.com/v1/chat/completions">
+                  placeholder="https://provider.example.com/v1/chat/completions">
 
               <label for="api-key">
                   API Key
@@ -58,6 +58,28 @@
                   type="text"
                   placeholder="gpt-5">
 
+              <label>
+                    Memory
+                </label>
+
+                <div class="memory-settings">
+                    <label class="checkbox-label">
+                        <input
+                            type="checkbox"
+                            id="unlimited-memory">
+                        Unlimited memory (Iterations)
+                    </label>
+
+                    <input
+                        id="memory-limit"
+                        type="number"
+                        min="0"
+                        step="1"
+                        value="40">
+                        <small class="memory-hint">
+                        (0 = no memory)
+                        </small>
+              </div>
               <label for="instructions">
                   AI instructions
               </label>
