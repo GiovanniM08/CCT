@@ -1,7 +1,7 @@
 # CCT
 Complementary Chat Tool (CCT) is a lightweight AI chat client built with Tauri.
 
-The application is designed to be as lightweight and efficient as possible while providing a simple interface for interacting with local or remote AI models. All conversations remain within the application and are sent only to the AI endpoint configured by the user. CCT operates entirely local on the user's machine and does not use external services.
+The application is designed to be as lightweight and efficient as possible while providing a simple interface for interacting with local or remote AI models. All conversations remain within the application and are sent only to the AI endpoint configured by the user. CCT operates entirely local on the user's machine and does not use any external services.
 
 It supports both local AI servers (such as LM Studio) and AI-compatible APIs while maintaining a simple, private, and resource-efficient workflow.
 
